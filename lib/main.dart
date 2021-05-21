@@ -1,4 +1,5 @@
 import 'package:complaintronix/screens/complaint_screen.dart';
+import 'package:complaintronix/screens/complaints_view_screen.dart';
 import 'package:complaintronix/screens/hostel_screen.dart';
 import 'package:complaintronix/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         RegisterScreen.id : (context) => RegisterScreen(),
         LoginScreen.id : (context) => LoginScreen(),
+        ComplaintsView.id : (context) =>ComplaintsView(),
         HostelScreen.id : (context) => HostelScreen(),
         ComplaintScreen.id: (context) => ComplaintScreen(hostelNumber : ModalRoute.of(context).settings.arguments),
       },
