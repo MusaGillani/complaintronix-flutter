@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/components/green_round_button.dart';
+import 'package:complaintronix/components/alert_box.dart' as alert;
+import 'package:complaintronix/services/auth.dart';
+import 'package:complaintronix/components/alert_box.dart' as alert;
 
 class ComplaintScreen extends StatefulWidget {
   ComplaintScreen({this.hostelNumber});
@@ -13,19 +16,28 @@ class ComplaintScreen extends StatefulWidget {
 }
 
 class _ComplaintScreenState extends State<ComplaintScreen> {
-
+  String name;
+  String roomNumber;
+  String phoneNumber;
   GroupValue _groupValue = GroupValue.ETHERNET;
-
+  AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    String name;
-    String roomNumber;
-    String phoneNumber;
-    GroupValue groupValue = GroupValue.ETHERNET;
     // final Arguments args = ModalRoute.of(context)!.settings.arguments as Arguments;
     print(widget.hostelNumber);
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return BackButton(
+              onPressed: () async {
+                if (await _auth.signOut() != null)
+                  Navigator.pop(context);
+                else alert.showDialogBox(context, 'Could not signout !');
+              },
+            );
+          },
+        ),
         centerTitle: true,
         title: kAppbarTitle,
       ),
@@ -118,14 +130,17 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             SizedBox(
               height: 25.0,
             ),
-            GreenRoundButton(buttonText: 'SUBMIT',onTap: _showDialogBox),
+            GreenRoundButton(
+                buttonText: 'SUBMIT',
+                onTap: () =>
+                    alert.showDialogBox(context, 'Complaint Registered')),
           ],
         ),
       ),
     );
   }
 
-  Widget _radioButton({String title, GroupValue value,Function onChanged}){
+  Widget _radioButton({String title, GroupValue value, Function onChanged}) {
     return RadioListTile(
       activeColor: Color(0xff1ed760),
       title: Text(
@@ -140,16 +155,6 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
       groupValue: _groupValue,
       onChanged: onChanged,
     );
-  }
-
-  Future<void> _showDialogBox(){
-    return showDialog<void>(context: context, builder: (context){
-      return AlertDialog(
-        title: Text('Complaint Registered'),
-        backgroundColor: Colors.black12,
-        elevation: 10.0,
-      );
-    });
   }
 }
 

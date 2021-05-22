@@ -1,4 +1,4 @@
-package com.example.complaintronix
+package com.musagillani.complaintronix
 
 import io.flutter.embedding.android.FlutterActivity
 

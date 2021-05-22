@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.complaintronix">
+    package="com.musagillani.complaintronix">
    <application
         android:label="complaintronix"
         android:icon="@mipmap/ic_launcher">

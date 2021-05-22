@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:complaintronix/screens/complaint_screen.dart';
 import 'package:complaintronix/screens/complaints_view_screen.dart';
 import 'package:complaintronix/screens/hostel_screen.dart';
@@ -7,7 +8,9 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
