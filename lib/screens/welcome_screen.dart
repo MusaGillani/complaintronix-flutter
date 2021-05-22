@@ -1,3 +1,4 @@
+import 'package:complaintronix/screens/complaints_view_screen.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/screens/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,9 @@ class WelcomeScreen extends StatelessWidget {
                 //   ),
                 // ),
                 GreenRoundButton(
-                  onTap: null,
+                  onTap: (){
+                    Navigator.pushNamed(context, ComplaintsView.id);
+                  },
                   buttonText: 'LOG IN',
                 ),
                 SizedBox(
