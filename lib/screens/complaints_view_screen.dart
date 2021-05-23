@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
+import 'package:complaintronix/services/networking.dart' as api;
 
 class ComplaintsViewScreen extends StatefulWidget {
 
@@ -35,13 +36,14 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
   }
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
     _isChecked = List<bool>.filled(complaints.length, false);
   }
 
   @override
   Widget build(BuildContext context) {
+    api.getHostelComplaints(hostelNumber :widget.hostelNumber);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,

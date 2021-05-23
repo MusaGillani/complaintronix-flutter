@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:complaintronix/components/alert_box.dart' as alert;
 import 'hostel_screen.dart';
-import 'package:complaintronix/services/networking.dart';
+import 'package:complaintronix/services/networking.dart' as api;
 
 class WelcomeScreen extends StatefulWidget {
   static const id = 'welcome_screen';
@@ -112,7 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         if (result != null) {
                           controllerEmail.clear();
                           controllerPassword.clear();
-                          dynamic hostelNumber = await Networking()
+                          int hostelNumber = await api
                               .checkhostelHeads(email: result.email);
                           if (hostelNumber == 0)
                             Navigator.pushNamed(context, HostelScreen.id);
