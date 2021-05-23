@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:complaintronix/components/alert_box.dart' as alert;
 import 'hostel_screen.dart';
+import 'package:complaintronix/services/networking.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const id = 'welcome_screen';
@@ -107,10 +108,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         dynamic result = await _auth.signInWithEmail(
                             email: email, password: password);
                         setState(() => _loading = false);
+                        print(result);
                         if (result != null) {
                           controllerEmail.clear();
                           controllerPassword.clear();
-                          Navigator.pushNamed(context, HostelScreen.id);
+                          dynamic hostelNumber = await Networking()
+                              .checkhostelHeads(email: result.email);
+                          if (hostelNumber == 0)
+                            Navigator.pushNamed(context, HostelScreen.id);
+                          else
+                            Navigator.pushNamed(
+                                context, ComplaintsViewScreen.id,
+                                arguments: hostelNumber);
                         } else {
                           alert.showDialogBox(context,
                               'Could not sign in with these credentials');

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
 
-class ComplaintsView extends StatefulWidget {
+class ComplaintsViewScreen extends StatefulWidget {
+
+  ComplaintsViewScreen({this.hostelNumber});
+
+  final int hostelNumber; // hostel number of hostel head
+
   static const id = 'complaints_view_screen';
 
   @override
-  _ComplaintsViewState createState() => _ComplaintsViewState();
+  _ComplaintsViewScreenState createState() => _ComplaintsViewScreenState();
 }
 
-class _ComplaintsViewState extends State<ComplaintsView> {
+class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
   List<Map> complaints = [
     {'name': 'musa', 'room': '66', 'issue': 'Ehternet'},
     {'name': 'nabeel', 'room': '67', 'issue': 'Router'},
@@ -56,7 +61,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
               SizedBox(
                 height: 10.0,
               ),
-              Text('H-3', style: kLogoTextStyle),
+              Text('H-${widget.hostelNumber}', style: kLogoTextStyle),
               SizedBox(
                 height: 10.0,
               ),
