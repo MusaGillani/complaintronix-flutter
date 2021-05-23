@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -27,11 +26,13 @@ class MyApp extends StatelessWidget {
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        RegisterScreen.id : (context) => RegisterScreen(),
-        LoginScreen.id : (context) => LoginScreen(),
-        ComplaintsView.id : (context) =>ComplaintsView(),
-        HostelScreen.id : (context) => HostelScreen(),
-        ComplaintScreen.id: (context) => ComplaintScreen(hostelNumber : ModalRoute.of(context).settings.arguments),
+        RegisterScreen.id: (context) => RegisterScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+        ComplaintsView.id: (context) => ComplaintsView(),
+        HostelScreen.id: (context) => HostelScreen(),
+        ComplaintScreen.id: (context) => ComplaintScreen(
+              hostelNumber: ModalRoute.of(context).settings.arguments,
+            ),
       },
     );
   }

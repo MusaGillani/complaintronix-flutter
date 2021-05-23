@@ -3,7 +3,6 @@ import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/components/green_round_button.dart';
 import 'package:complaintronix/components/alert_box.dart' as alert;
 import 'package:complaintronix/services/auth.dart';
-import 'package:complaintronix/components/alert_box.dart' as alert;
 
 class ComplaintScreen extends StatefulWidget {
   ComplaintScreen({this.hostelNumber});
@@ -21,9 +20,11 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
   String phoneNumber;
   GroupValue _groupValue = GroupValue.ETHERNET;
   AuthService _auth = AuthService();
+  GoogleAuthService _googleAuth = GoogleAuthService();
   @override
   Widget build(BuildContext context) {
     // final Arguments args = ModalRoute.of(context)!.settings.arguments as Arguments;
+    
     print(widget.hostelNumber);
     return Scaffold(
       appBar: AppBar(
@@ -31,9 +32,22 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
           builder: (context) {
             return BackButton(
               onPressed: () async {
-                if (await _auth.signOut() != null)
-                  Navigator.pop(context);
-                else alert.showDialogBox(context, 'Could not signout !');
+                // print(_auth.currentUser().toString());
+                if (_auth.currentUser() != null) {
+                  await _auth.signOut();
+                    Navigator.pop(context);
+                  // else
+                  //   alert.showDialogBox(context, 'Could not signout !');
+                }
+                if(_googleAuth.currentUser() != null){
+                   await _googleAuth.signOut();
+                  //  dynamic result = await _googleAuth.currentUser();
+                  // print(result);
+                    Navigator.pop(context);
+                  // else
+                  //   alert.showDialogBox(context, 'Could not signout using google!');
+                }
+                
               },
             );
           },

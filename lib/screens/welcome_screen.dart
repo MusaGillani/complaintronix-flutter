@@ -18,8 +18,8 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  final _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
+  final GoogleAuthService _googleAuth = GoogleAuthService();
   String email;
   String password;
   bool _loading = false;
@@ -106,14 +106,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         setState(() => _loading = true);
                         dynamic result = await _auth.signInWithEmail(
                             email: email, password: password);
+                        setState(() => _loading = false);
                         if (result != null) {
-                          setState(() => _loading = false);
                           controllerEmail.clear();
                           controllerPassword.clear();
-                          Navigator.pushNamed(context, ComplaintsView.id);
-                        } else
+                          Navigator.pushNamed(context, HostelScreen.id);
+                        } else {
                           alert.showDialogBox(context,
                               'Could not sign in with these credentials');
+                        }
                       }
                     },
                     buttonText: 'LOG IN',
@@ -139,12 +140,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       ),
                       SizedBox(width: 10.0),
-                      CircleAvatar(
-                        child: Icon(
-                          FontAwesomeIcons.google,
-                          color: Color(0xff1ed760),
-                          size: 40.0,
+                      GestureDetector(
+                        child: CircleAvatar(
+                          child: Icon(
+                            FontAwesomeIcons.google,
+                            color: Color(0xff1ed760),
+                            size: 40.0,
+                          ),
                         ),
+                        onTap: () async {
+                          setState(() => _loading = true);
+                          dynamic result = await _googleAuth.signInGoogle();
+                          setState(() => _loading = false);
+
+                          if (result != null) {
+                            Navigator.pushNamed(context, HostelScreen.id);
+                          } else {
+                            alert.showDialogBox(context,
+                                'Could not sign in with these credentials');
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -166,8 +181,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           controllerEmail.clear();
                           controllerPassword.clear();
                           Navigator.pushNamed(context, HostelScreen.id);
-                        } else
+                        } else {
+                          setState(() => _loading = false);
                           alert.showDialogBox(context, 'User already exists !');
+                        }
                       }
                     },
                     buttonText: 'REGISTER',
