@@ -16,6 +16,7 @@ class ComplaintScreen extends StatefulWidget {
 
 class _ComplaintScreenState extends State<ComplaintScreen> {
   String name;
+  String reg;
   String roomNumber;
   String phoneNumber;
   GroupValue _groupValue = GroupValue.ETHERNET;
@@ -24,7 +25,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
   @override
   Widget build(BuildContext context) {
     // final Arguments args = ModalRoute.of(context)!.settings.arguments as Arguments;
-    
+
     print(widget.hostelNumber);
     return Scaffold(
       appBar: AppBar(
@@ -35,19 +36,18 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                 // print(_auth.currentUser().toString());
                 if (_auth.currentUser() != null) {
                   await _auth.signOut();
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                   // else
                   //   alert.showDialogBox(context, 'Could not signout !');
                 }
-                if(_googleAuth.currentUser() != null){
-                   await _googleAuth.signOut();
+                if (_googleAuth.currentUser() != null) {
+                  await _googleAuth.signOut();
                   //  dynamic result = await _googleAuth.currentUser();
                   // print(result);
-                    Navigator.pop(context);
+                  Navigator.pop(context);
                   // else
                   //   alert.showDialogBox(context, 'Could not signout using google!');
                 }
-                
               },
             );
           },
@@ -62,14 +62,33 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
         padding: EdgeInsets.all(10.0),
         child: Column(
           children: [
-            TextField(
-              onChanged: (newValue) {
-                name = newValue;
-              },
-              style: TextStyle(color: Color(0xffd3d3d3)),
-              decoration: kInputFieldDecoration.copyWith(
-                hintText: 'name',
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (newValue) {
+                      name = newValue;
+                    },
+                    style: TextStyle(color: Color(0xffd3d3d3)),
+                    decoration: kInputFieldDecoration.copyWith(
+                      hintText: 'name',
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    onChanged: (newValue) {
+                      reg = newValue;
+                    },
+                    style: TextStyle(color: Color(0xffd3d3d3)),
+                    decoration: kInputFieldDecoration.copyWith(
+                      hintText: 'reg',
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 10,
