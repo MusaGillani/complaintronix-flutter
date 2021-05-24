@@ -35,3 +35,27 @@ Future getHostelComplaints({int hostelNumber}) async {
   print(result[0]['type']);
   // return result ?? null ; // explicitly returning null if result is null
 }
+
+
+Future registerComplaint({int reg_no,String name,String email,int hostel_no,int room_no,String phone,String type}) async {
+  final response = await http.post(
+    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{'reg_no':reg_no.toString(),
+      'student_name':name,
+      'email': email,
+     'hostel_no': hostel_no.toString(),
+     'room_no':room_no.toString(),
+     'phone_no':phone,
+     'type':type}),
+  );
+
+  if (response.statusCode == 200) {
+    dynamic data = jsonDecode(response.body);
+    print(data);
+  } else {
+    throw Exception('Failed to register complaint.');
+  }
+}
