@@ -60,6 +60,7 @@ Future registerComplaint({int reg_no,String name,String email,int hostel_no,int 
   }
 }
 
+
 Future updateComplaint({int id}) async {
   final res = await http.put(
     Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
