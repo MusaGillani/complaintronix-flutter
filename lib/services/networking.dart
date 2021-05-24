@@ -3,7 +3,6 @@ import 'dart:convert';
 
 final _url = 'complaintronix.herokuapp.com';
 
-
 // Hostel head API used here
 Future<int> checkhostelHeads({String email}) async {
   String _api = '/api/heads';
@@ -29,9 +28,14 @@ Future getHostelComplaints({int hostelNumber}) async {
   );
 
   dynamic result = jsonDecode(res.body);
-  print(result);
-  print(result[0]['student_name']);
-  print(result[0]['room_no']);
-  print(result[0]['type']);
-  // return result ?? null ; // explicitly returning null if result is null
+  if (result.length != 0) {
+    print(result);
+    print(result[0]['student_name']);
+    print(result[0]['room_no']);
+    print(result[0]['type']);
+  } else { 
+    print('no complaints');
+  }
+
+  return result ?? null ; // explicitly returning null if result is null
 }
