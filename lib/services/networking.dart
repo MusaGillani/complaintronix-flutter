@@ -41,17 +41,17 @@ Future getHostelComplaints({int hostelNumber}) async {
 }
 
 
-Future registerComplaint({int reg_no,String name,String email,int hostel_no,int room_no,String phone,String type}) async {
+Future registerComplaint({int reg,String name,String email,int hostel,int room,String phone,String type}) async {
   final response = await http.post(
     Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(<String, String>{'reg_no':reg_no.toString(),
+    body: jsonEncode(<String, String>{'reg_no':reg.toString(),
       'student_name':name,
       'email': email,
-     'hostel_no': hostel_no.toString(),
-     'room_no':room_no.toString(),
+     'hostel_no': hostel.toString(),
+     'room_no':room.toString(),
      'phone_no':phone,
      'type':type}),
   );
@@ -60,6 +60,6 @@ Future registerComplaint({int reg_no,String name,String email,int hostel_no,int 
     dynamic data = jsonDecode(response.body);
     print(data);
   } else {
-    throw Exception('Failed to register complaint.');
+    print('Failed to register complaint.');
   }
 }
