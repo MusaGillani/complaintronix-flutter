@@ -63,3 +63,23 @@ Future registerComplaint({int reg,String name,String email,int hostel,int room,S
     print('Failed to register complaint.');
   }
 }
+
+
+Future updateComplaint({int id}) async {
+  final res = await http.put(
+    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'id': '$id',
+    }),
+  );
+
+  if (res.statusCode == 200) {
+    dynamic data = jsonDecode(res.body);
+    print(data);
+  } else {
+    throw Exception('Failed to update complaint.');
+  }
+}
