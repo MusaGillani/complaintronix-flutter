@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/services/networking.dart' as api;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ComplaintsViewScreen extends StatefulWidget {
-
   ComplaintsViewScreen({this.hostelNumber});
 
   final int hostelNumber; // hostel number of hostel head
@@ -15,14 +15,15 @@ class ComplaintsViewScreen extends StatefulWidget {
 }
 
 class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
-  List<Map> complaints = [
-    {'name': 'musa', 'room': '66', 'issue': 'Ehternet'},
-    {'name': 'nabeel', 'room': '67', 'issue': 'Router'},
-    {'name': 'zain', 'room': '65', 'issue': 'Cable'},
-  ];
-  List<bool> _isChecked;
+  // List<Map<String, String>> _complaints;
+  // [
+  //   {'name': 'musa', 'room': '66', 'issue': 'Ehternet'},
+  //   {'name': 'nabeel', 'room': '67', 'issue': 'Router'},
+  //   {'name': 'zain', 'room': '65', 'issue': 'Cable'},
+  // ];
+  List<bool> _isChecked = [];
 
-  Color _getColor(Set<MaterialState> state){
+  Color _getColor(Set<MaterialState> state) {
     Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
       MaterialState.focused,
@@ -30,20 +31,24 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
       MaterialState.selected,
     };
 
-    if(state.any(interactiveStates.contains)){
+    if (state.any(interactiveStates.contains)) {
       return Color(0xff1ed760);
     }
   }
 
+  // Future<void> getComplaints() async {
+  //   await api.getHostelComplaints(hostelNumber: widget.hostelNumber).then(
+  //       (complaints) =>
+  //           _isChecked = List<bool>.filled(complaints.length, false));
+  // }
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _isChecked = List<bool>.filled(complaints.length, false);
   }
 
   @override
   Widget build(BuildContext context) {
-    api.getHostelComplaints(hostelNumber :widget.hostelNumber);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -69,9 +74,24 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
               ),
               Align(
                 alignment: Alignment.topLeft,
-                child: Text(
-                  'Complaints',
-                  style: kLogoTextStyle.copyWith(color: Color(0xffd3d3d3)),
+                child: Row(
+                  children: [
+                    Text(
+                      'Complaints',
+                      style: kLogoTextStyle.copyWith(color: Color(0xffd3d3d3)),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    IconButton(
+                      onPressed: () => setState(() {}),
+                      icon: Icon(
+                        Icons.refresh_rounded,
+                        size: 30.0,
+                        color: Color(0xffd3d3d3),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
@@ -81,44 +101,60 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Status', style: kLogoTextStyle),
-
-                  Text('Name', style: kLogoTextStyle),
-
+                  Text('Reg', style: kLogoTextStyle),
                   Text('room', style: kLogoTextStyle),
-
                   Text('issue', style: kLogoTextStyle),
-
-                  
                 ],
               ),
-              Flexible(
+              FutureBuilder(
+                future:
+                    api.getHostelComplaints(hostelNumber: widget.hostelNumber),
+                builder: (context,
+                    AsyncSnapshot<List<Map<String, String>>> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.lightBlueAccent,
+                      ),
+                    );
+                  }
+                  return Flexible(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: complaints.length,
+                      itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
+                        _isChecked.add(
+                            snapshot.data[index]['isChecked'] == 'true'
+                                ? true
+                                : false);
+
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Checkbox(
-                              fillColor: MaterialStateProperty.resolveWith<Color>(_getColor),
+                              fillColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                      _getColor),
                               value: _isChecked[index],
-                              onChanged: (newValue) =>
-                                  setState(() => _isChecked[index] = newValue),
+                              onChanged: (newValue) async {
+                                  await api.updateComplaint(reg: snapshot.data[index]['reg'],status: newValue ? 'completed' : 'pending');
+                                  setState(() => _isChecked[index] = newValue);
+                              }
                             ),
                             Text(
-                              '${complaints[index]['name']}',
+                              '${snapshot.data[index]['reg']}',
                               style: kLogoTextStyle.copyWith(
                                 color: Color(0xffd3d3d3),
                               ),
                             ),
                             Text(
-                              '${complaints[index]['room']}',
+                              '${snapshot.data[index]['room']}',
                               style: kLogoTextStyle.copyWith(
                                 color: Color(0xffd3d3d3),
                               ),
                             ),
                             Text(
-                              '${complaints[index]['issue']}',
+                              '${snapshot.data[index]['issue']}',
                               style: kLogoTextStyle.copyWith(
                                 color: Color(0xffd3d3d3),
                               ),
@@ -127,7 +163,9 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                         );
                       },
                     ),
-                  ),
+                  );
+                },
+              ),
             ],
           ),
         ));
