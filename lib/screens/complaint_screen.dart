@@ -212,6 +212,8 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                     setState(() => _loading = false);
                     if (status == 200)
                       alert.showDialogBox(context, 'Complaint Registered');
+                    else if(status == 409) 
+                      alert.showDialogBox(context, 'Complaint Already Registered \n Against This Reg!!');
                     else {
                       alert.showDialogBox(
                           context, 'Could not register Complaint');

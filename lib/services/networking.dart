@@ -78,13 +78,13 @@ Future<int> registerComplaint(
     }),
   );
 
-  if (response.statusCode == 200) {
-    dynamic data = jsonDecode(response.body);
-    print('printing post response\n');
-    print(data);
-  } else {
-    print('Failed to register complaint.');
-  }
+  // if (response.statusCode == 200) {
+  //   dynamic data = jsonDecode(response.body);
+  //   print('printing post response\n');
+  //   print(data);
+  // } else {
+  //   print('Failed to register complaint.');
+  // }
   return response.statusCode;
 }
 
