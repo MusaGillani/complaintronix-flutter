@@ -35,17 +35,17 @@ Future<List<Map<String, String>>> getHostelComplaints(
   List<Map<String, String>> data = [];
   if (result.length != 0) {
     print(result);
-      // print(res['student_name']);
-      // print(res['room_no']);
-      // print(res['type']);
-    
-    for (var res in result) 
-    data.add({
-      'reg': res['reg_no'].toString(),
-      'room': res['room_no'],
-      'issue': res['type'],
-      'isChecked' : res['status'] == 'pending' ? 'false' : 'true',
-    });
+    // print(res['student_name']);
+    // print(res['room_no']);
+    // print(res['type']);
+
+    for (var res in result)
+      data.add({
+        'reg': res['reg_no'].toString(),
+        'room': res['room_no'],
+        'issue': res['type'],
+        'isChecked': res['status'] == 'pending' ? 'false' : 'true',
+      });
   } else {
     print('no complaints');
     // return empty list , size zero
@@ -54,12 +54,12 @@ Future<List<Map<String, String>>> getHostelComplaints(
   return data;
 }
 
-Future registerComplaint(
-    {int reg,
+Future<int> registerComplaint(
+    {String reg,
     String name,
     String email,
     int hostel,
-    int room,
+    String room,
     String phone,
     String type}) async {
   final response = await http.post(
@@ -68,11 +68,11 @@ Future registerComplaint(
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
-      'reg_no': reg.toString(),
+      'reg_no': '$reg',
       'student_name': name,
       'email': email,
       'hostel_no': hostel.toString(),
-      'room_no': room.toString(),
+      'room_no': '$room',
       'phone_no': phone,
       'type': type
     }),
@@ -80,22 +80,21 @@ Future registerComplaint(
 
   if (response.statusCode == 200) {
     dynamic data = jsonDecode(response.body);
+    print('printing post response\n');
     print(data);
   } else {
     print('Failed to register complaint.');
   }
+  return response.statusCode;
 }
 
-Future updateComplaint({String reg,String status}) async {
+Future updateComplaint({String reg, String status}) async {
   final res = await http.put(
     Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(<String, String>{
-      'reg_no': '$reg',
-      'status': '$status'
-    }),
+    body: jsonEncode(<String, String>{'reg_no': '$reg', 'status': '$status'}),
   );
 
   if (res.statusCode == 200) {
@@ -106,28 +105,7 @@ Future updateComplaint({String reg,String status}) async {
   }
 }
 
-
-Future updateComplaint({int id}) async {
-  final res = await http.put(
-    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'id': '$id',
-    }),
-  );
-
-  if (res.statusCode == 200) {
-    dynamic data = jsonDecode(res.body);
-    print(data);
-  } else {
-    throw Exception('Failed to update complaint.');
-  }
-}
-
 Future deleteComplaint({int id}) async {
-  
   final http.Response response = await http.delete(
     Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
     headers: <String, String>{
@@ -136,7 +114,6 @@ Future deleteComplaint({int id}) async {
     body: jsonEncode(<String, String>{
       'id': '$id',
     }),
-
   );
 
   if (response.statusCode == 200) {
