@@ -123,3 +123,44 @@ Future deleteComplaint({int id}) async {
     throw Exception('Failed to delete complaint.');
   }
 }
+
+
+Future updateComplaint({int id}) async {
+  final res = await http.put(
+    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'id': '$id',
+    }),
+  );
+
+  if (res.statusCode == 200) {
+    dynamic data = jsonDecode(res.body);
+    print(data);
+  } else {
+    throw Exception('Failed to update complaint.');
+  }
+}
+
+Future deleteComplaint({int id}) async {
+  
+  final http.Response response = await http.delete(
+    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'id': '$id',
+    }),
+
+  );
+
+  if (response.statusCode == 200) {
+    dynamic data = jsonDecode(response.body);
+    print(data);
+  } else {
+    throw Exception('Failed to delete complaint.');
+  }
+}
