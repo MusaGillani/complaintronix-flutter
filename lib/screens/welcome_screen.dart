@@ -1,4 +1,5 @@
 import 'package:complaintronix/screens/complaints_view_screen.dart';
+import 'package:complaintronix/screens/status_screen.dart';
 import 'package:complaintronix/services/auth.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/screens/register_screen.dart';
@@ -112,11 +113,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         if (result != null) {
                           controllerEmail.clear();
                           controllerPassword.clear();
-                          int hostelNumber = await api
-                              .checkhostelHeads(email: result.email);
-                          if (hostelNumber == 0)
-                            Navigator.pushNamed(context, HostelScreen.id);
-                          else
+                          int hostelNumber =
+                              await api.checkhostelHeads(email: result.email);
+                          if (hostelNumber == 0) {
+                            dynamic complaint = await api.getComplaintStatus(
+                                email: result.email);
+                            if (complaint != 'empty') {
+                              Navigator.pushNamed(context, StatusScreen.id,
+                                  arguments: {
+                                    'reg': complaint[0]['reg_no'],
+                                    'status': complaint[0]['status']
+                                  });
+                            } else
+                              Navigator.pushNamed(context, HostelScreen.id);
+                          } else
                             Navigator.pushNamed(
                                 context, ComplaintsViewScreen.id,
                                 arguments: hostelNumber);
@@ -161,9 +171,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           setState(() => _loading = true);
                           dynamic result = await _googleAuth.signInGoogle();
                           setState(() => _loading = false);
-
+                          // TODO api call to check user via email here
                           if (result != null) {
-                            Navigator.pushNamed(context, HostelScreen.id);
+                            dynamic complaint = await api.getComplaintStatus(
+                                email: result.email);
+                            if (complaint != 'empty') {
+                              Navigator.pushNamed(context, StatusScreen.id,
+                                  arguments: {
+                                    'reg': complaint[0]['reg_no'],
+                                    'status': complaint[0]['status']
+                                  });
+                            } else
+                              Navigator.pushNamed(context, HostelScreen.id);
                           } else {
                             alert.showDialogBox(context,
                                 'Could not sign in with these credentials');

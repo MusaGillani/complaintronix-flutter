@@ -1,3 +1,4 @@
+import 'package:complaintronix/screens/status_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:complaintronix/screens/complaint_screen.dart';
 import 'package:complaintronix/screens/complaints_view_screen.dart';
@@ -29,11 +30,14 @@ class MyApp extends StatelessWidget {
         RegisterScreen.id: (context) => RegisterScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         ComplaintsViewScreen.id: (context) => ComplaintsViewScreen(
-          hostelNumber: ModalRoute.of(context).settings.arguments,
-        ),
+              hostelNumber: ModalRoute.of(context).settings.arguments,
+            ),
         HostelScreen.id: (context) => HostelScreen(),
         ComplaintScreen.id: (context) => ComplaintScreen(
               hostelNumber: ModalRoute.of(context).settings.arguments,
+            ),
+        StatusScreen.id: (context) => StatusScreen(
+              args: ModalRoute.of(context).settings.arguments,
             ),
       },
     );

@@ -105,14 +105,14 @@ Future updateComplaint({String reg, String status}) async {
   }
 }
 
-Future deleteComplaint({int id}) async {
+Future<int> deleteComplaint({int reg}) async {
   final http.Response response = await http.delete(
     Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(<String, String>{
-      'id': '$id',
+    body: jsonEncode(<String, int>{
+      'reg_no': reg,
     }),
   );
 
@@ -120,6 +120,28 @@ Future deleteComplaint({int id}) async {
     dynamic data = jsonDecode(response.body);
     print(data);
   } else {
-    throw Exception('Failed to delete complaint.');
+    print('Failed to delete complaint.');
   }
+  print(response.statusCode);
+  print(response.body);
+  return response.statusCode;
+}
+
+Future<dynamic> getComplaintStatus({String email}) async {
+  final http.Response response = await http.get(
+    Uri.https('complaintronix.herokuapp.com', '/api/complaints/status', {
+      'email': '$email',
+    }),
+  );
+  dynamic res  = 'empty';
+  if(response.body != 'empty')
+    res = jsonDecode(response.body);
+
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    print('error in api call');
+  }
+  print(res);
+  return res;
 }
