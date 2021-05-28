@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/services/networking.dart' as api;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'chat_screen.dart';
 
 class ComplaintsViewScreen extends StatefulWidget {
   ComplaintsViewScreen({this.hostelNumber});
@@ -53,6 +53,22 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: kAppbarTitle,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  ChatScreen.id,
+                  arguments: true,
+                );
+              },
+              child: Text(
+                'Chat',
+                style: kLogoTextStyle.copyWith(color: Color(0xffd3d3d3)),
+              ),
+              style: TextButton.styleFrom(textStyle: TextStyle(fontSize: 20.0)),
+            ),
+          ],
         ),
         backgroundColor: Colors.black,
         body: Container(
@@ -132,15 +148,17 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Checkbox(
-                              fillColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                      _getColor),
-                              value: _isChecked[index],
-                              onChanged: (newValue) async {
-                                  await api.updateComplaint(reg: snapshot.data[index]['reg'],status: newValue ? 'completed' : 'pending');
+                                fillColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        _getColor),
+                                value: _isChecked[index],
+                                onChanged: (newValue) async {
+                                  await api.updateComplaint(
+                                      reg: snapshot.data[index]['reg'],
+                                      status:
+                                          newValue ? 'completed' : 'pending');
                                   setState(() => _isChecked[index] = newValue);
-                              }
-                            ),
+                                }),
                             Text(
                               '${snapshot.data[index]['reg']}',
                               style: kLogoTextStyle.copyWith(

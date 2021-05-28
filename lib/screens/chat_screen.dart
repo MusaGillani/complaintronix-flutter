@@ -7,8 +7,10 @@ final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
 
 class ChatScreen extends StatefulWidget {
+  ChatScreen({this.head});
   static const String id = 'chat_screen';
 
+  final bool head;
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -50,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessagesStream(),
+            MessagesStream(head: widget.head,),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -91,6 +93,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessagesStream extends StatelessWidget {
+
+  MessagesStream({this.head});
+
+  final bool head;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -117,6 +124,7 @@ class MessagesStream extends StatelessWidget {
             text: messageText,
             isMe: currentUser ==
                 messageSender, //The message from the logged in user
+            isHead: head,
           );
           messageBubbles.add(messageBubble);
         }
@@ -133,10 +141,10 @@ class MessagesStream extends StatelessWidget {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.text, this.sender, this.isMe});
+  MessageBubble({this.text, this.sender, this.isMe,this.isHead});
 
   final String sender, text;
-  final bool isMe;
+  final bool isMe,isHead;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -149,7 +157,7 @@ class MessageBubble extends StatelessWidget {
             sender,
             style: TextStyle(
               fontSize: 12.0,
-              color: Color(0xffd3d3d3),
+              color: isHead ? Color(0xff1ed760) : Color(0xff1ed760),
             ),
           ),
           SizedBox(

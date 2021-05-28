@@ -40,7 +40,9 @@ class MyApp extends StatelessWidget {
         StatusScreen.id: (context) => StatusScreen(
               args: ModalRoute.of(context).settings.arguments,
             ),
-        ChatScreen.id: (context) => ChatScreen(),
+        ChatScreen.id: (context) => ChatScreen(
+          head: ModalRoute.of(context).settings.arguments,
+        ),
       },
     );
   }

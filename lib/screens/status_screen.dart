@@ -4,6 +4,7 @@ import 'package:complaintronix/services/auth.dart';
 import 'package:complaintronix/services/networking.dart' as api;
 import '../components/alert_box.dart' as alert;
 import 'chat_screen.dart';
+
 class StatusScreen extends StatefulWidget {
   StatusScreen({this.args});
 
@@ -45,7 +46,11 @@ class _StatusScreenState extends State<StatusScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, ChatScreen.id);
+              Navigator.pushNamed(
+                context,
+                ChatScreen.id,
+                arguments: false,
+              );
             },
             child: Text(
               'Chat',
