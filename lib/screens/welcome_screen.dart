@@ -1,7 +1,7 @@
 import 'package:complaintronix/screens/complaints_view_screen.dart';
+import 'package:complaintronix/screens/status_screen.dart';
 import 'package:complaintronix/services/auth.dart';
 import 'package:complaintronix/utilities/constants.dart';
-import 'package:complaintronix/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:complaintronix/components/green_round_button.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +21,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final AuthService _auth = AuthService();
   final GoogleAuthService _googleAuth = GoogleAuthService();
+  final FacebookAuthService _fbAuth = FacebookAuthService();
   String email;
   String password;
   bool _loading = false;
@@ -112,11 +113,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         if (result != null) {
                           controllerEmail.clear();
                           controllerPassword.clear();
-                          int hostelNumber = await api
-                              .checkhostelHeads(email: result.email);
-                          if (hostelNumber == 0)
-                            Navigator.pushNamed(context, HostelScreen.id);
-                          else
+                          int hostelNumber =
+                              await api.checkhostelHeads(email: result.email);
+                          if (hostelNumber == 0) {
+                            dynamic complaint = await api.getComplaintStatus(
+                                email: result.email);
+                            if (complaint != 'empty') {
+                              Navigator.pushNamed(context, StatusScreen.id,
+                                  arguments: {
+                                    'reg': complaint[0]['reg_no'],
+                                    'status': complaint[0]['status']
+                                  });
+                            } else
+                              Navigator.pushNamed(context, HostelScreen.id);
+                          } else
                             Navigator.pushNamed(
                                 context, ComplaintsViewScreen.id,
                                 arguments: hostelNumber);
@@ -141,12 +151,34 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        child: Icon(
-                          FontAwesomeIcons.facebook,
-                          color: Color(0xff1ed760),
-                          size: 40.0,
+                      GestureDetector(
+                        child: CircleAvatar(
+                          child: Icon(
+                            FontAwesomeIcons.facebook,
+                            color: Color(0xff1ed760),
+                            size: 40.0,
+                          ),
                         ),
+                        onTap: () async {
+                          setState(() => _loading = true);
+                          String email = await _fbAuth.fblogin();
+                          setState(() => _loading = false);
+                          if (email != 'error' || email != 'cancelled') {
+                            dynamic complaint = await api.getComplaintStatus(
+                                email: email);
+                            if (complaint != 'empty') {
+                              Navigator.pushNamed(context, StatusScreen.id,
+                                  arguments: {
+                                    'reg': complaint[0]['reg_no'],
+                                    'status': complaint[0]['status']
+                                  });
+                            } else
+                              Navigator.pushNamed(context, HostelScreen.id);
+                          } else {
+                            alert.showDialogBox(context,
+                                'Could not sign in with these credentials');
+                          }
+                        },
                       ),
                       SizedBox(width: 10.0),
                       GestureDetector(
@@ -161,9 +193,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           setState(() => _loading = true);
                           dynamic result = await _googleAuth.signInGoogle();
                           setState(() => _loading = false);
-
                           if (result != null) {
-                            Navigator.pushNamed(context, HostelScreen.id);
+                            dynamic complaint = await api.getComplaintStatus(
+                                email: result.email);
+                            if (complaint != 'empty') {
+                              Navigator.pushNamed(context, StatusScreen.id,
+                                  arguments: {
+                                    'reg': complaint[0]['reg_no'],
+                                    'status': complaint[0]['status']
+                                  });
+                            } else
+                              Navigator.pushNamed(context, HostelScreen.id);
                           } else {
                             alert.showDialogBox(context,
                                 'Could not sign in with these credentials');

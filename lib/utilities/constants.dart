@@ -35,9 +35,19 @@ var kAppbarTitle = Container(
   ),
 );
 
-enum GroupValue{
-  ETHERNET,
-  ROUTER,
-  CABLE_BROKEN,
-  CABLE_SHORT
-}
+enum GroupValue { ETHERNET, ROUTER, CABLE_BROKEN, CABLE_SHORT }
+
+const kMessageFiekdDecoration = InputDecoration(
+  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+  hintText: 'Type your message here...',
+  border: InputBorder.none,
+);
+
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(
+      color: Color(0xff1ed760),
+      width: 2.0,
+    ),
+  ),
+);
