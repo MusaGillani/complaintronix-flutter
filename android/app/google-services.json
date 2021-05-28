@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "256321097802",
+    "project_id": "complaintronix-flutter",
+    "storage_bucket": "complaintronix-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256321097802:android:8d04aafed2b7cf30e9d6b3",
+        "android_client_info": {
+          "package_name": "com.musagillani.complaintronix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256321097802-shl8h7qtbvneiki8nd5kerb1othrnhcv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.musagillani.complaintronix",
+            "certificate_hash": "4605a1ecf6cc2789aa59bf90118a9280ae649147"
+          }
+        },
+        {
+          "client_id": "256321097802-isg9hogvacce2g4rdcnrh0tmmbtq388m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaucJFph64sLtr3cUGaK977PoSWwFbv5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256321097802-isg9hogvacce2g4rdcnrh0tmmbtq388m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

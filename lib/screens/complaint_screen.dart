@@ -142,12 +142,14 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
               SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Text(
-                  'Select your ISSUE',
-                  style: kLogoTextStyle.copyWith(
-                    color: Color(0xffd3d3d3),
-                    fontSize: 40.0,
+              Flexible(
+                              child: Center(
+                  child: Text(
+                    'Select your ISSUE',
+                    style: kLogoTextStyle.copyWith(
+                      color: Color(0xffd3d3d3),
+                      fontSize: 40.0,
+                    ),
                   ),
                 ),
               ),
