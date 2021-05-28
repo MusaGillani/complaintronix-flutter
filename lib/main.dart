@@ -4,6 +4,7 @@ import 'package:complaintronix/screens/complaint_screen.dart';
 import 'package:complaintronix/screens/complaints_view_screen.dart';
 import 'package:complaintronix/screens/hostel_screen.dart';
 import 'package:complaintronix/screens/welcome_screen.dart';
+import 'package:complaintronix/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         StatusScreen.id: (context) => StatusScreen(
               args: ModalRoute.of(context).settings.arguments,
             ),
+        ChatScreen.id: (context) => ChatScreen(),
       },
     );
   }
