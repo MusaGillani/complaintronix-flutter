@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:complaintronix/utilities/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:complaintronix/utilities/constants.dart';
+import 'package:complaintronix/services/messages.dart';
 
-final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
 
 class ChatScreen extends StatefulWidget {
@@ -52,7 +51,9 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessagesStream(head: widget.head,),
+            MessagesStream(
+              loggedInUser: loggedInUser,
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -73,121 +74,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       // send message text
                       messageTextController.clear();
-                      _firestore.collection('messages').add(
-                        {
-                          'text': messageText,
-                          'sender': loggedInUser.email,
-                          'ts': FieldValue.serverTimestamp(),
-                        },
-                      );
+                      sendMessage(messageText: messageText,loggedInUser: loggedInUser);
                     },
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MessagesStream extends StatelessWidget {
-
-  MessagesStream({this.head});
-
-  final bool head;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').orderBy('ts').snapshots(),
-      builder: (context, snapshot) {
-        List<MessageBubble> messageBubbles = [];
-        if (!snapshot.hasData) {
-          // showing spinner until we get data
-          return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-          );
-        }
-        final messages = snapshot.data.docs.reversed;
-        for (var message in messages) {
-          final messageText = message['text'];
-          final messageSender = message['sender'];
-
-          final currentUser = loggedInUser.email;
-
-          final messageBubble = MessageBubble(
-            sender: messageSender,
-            text: messageText,
-            isMe: currentUser ==
-                messageSender, //The message from the logged in user
-            isHead: head,
-          );
-          messageBubbles.add(messageBubble);
-        }
-
-        return Expanded(
-          child: ListView(
-              reverse: true,
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children: messageBubbles),
-        );
-      },
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  MessageBubble({this.text, this.sender, this.isMe,this.isHead});
-
-  final String sender, text;
-  final bool isMe,isHead;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            sender,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: isHead ? Color(0xff1ed760) : Color(0xff1ed760),
-            ),
-          ),
-          SizedBox(
-            height: 5.0,
-          ),
-          Material(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(isMe ? 30.0 : 0.0),
-              topRight: Radius.circular(isMe ? 0.0 : 30.0),
-              bottomLeft: Radius.circular(30.0),
-              bottomRight: Radius.circular(30.0),
-            ),
-            elevation: 5.0,
-            color: isMe ? Color(0xff1ed760) : Colors.grey,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 10.0,
-                horizontal: 20.0,
-              ),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                  fontSize: 15.0,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
