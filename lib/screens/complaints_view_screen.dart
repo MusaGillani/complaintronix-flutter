@@ -22,6 +22,7 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
   //   {'name': 'zain', 'room': '65', 'issue': 'Cable'},
   // ];
   List<bool> _isChecked = [];
+  Future<List<Map<String, String>>> _future;
 
   Color _getColor(Set<MaterialState> state) {
     Set<MaterialState> interactiveStates = <MaterialState>{
@@ -44,6 +45,10 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
 
   @override
   void initState() {
+    Future.delayed(
+        Duration.zero,
+        () => _future =
+            api.getHostelComplaints(hostelNumber: widget.hostelNumber));
     super.initState();
   }
 
@@ -123,21 +128,16 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                 ],
               ),
               FutureBuilder(
-                future:
-                    api.getHostelComplaints(hostelNumber: widget.hostelNumber),
+                future: _future,
                 builder: (context,
                     AsyncSnapshot<List<Map<String, String>>> snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.lightBlueAccent,
-                      ),
-                    );
-                  }
+                  // return snapshot.connectionState == ConnectionState.done
+                  //     ?
                   return Flexible(
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: snapshot.data.length,
+                      itemCount:
+                          snapshot.data != null ? snapshot.data.length : 0,
                       itemBuilder: (context, index) {
                         _isChecked.add(
                             snapshot.data[index]['isChecked'] == 'true'
@@ -182,6 +182,11 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                       },
                     ),
                   );
+                  // : Center(
+                  //     child: CircularProgressIndicator(
+                  //       backgroundColor: Colors.lightBlueAccent,
+                  //     ),
+                  //   );
                 },
               ),
             ],

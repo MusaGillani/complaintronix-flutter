@@ -1,14 +1,12 @@
 import 'package:complaintronix/screens/status_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:complaintronix/screens/complaint_screen.dart';
 import 'package:complaintronix/screens/complaints_view_screen.dart';
 import 'package:complaintronix/screens/hostel_screen.dart';
 import 'package:complaintronix/screens/welcome_screen.dart';
 import 'package:complaintronix/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+void main() {
   runApp(MyApp());
 }
 
@@ -28,16 +26,16 @@ class MyApp extends StatelessWidget {
         ComplaintsViewScreen.id: (context) => ComplaintsViewScreen(
               hostelNumber: ModalRoute.of(context).settings.arguments,
             ),
-        HostelScreen.id: (context) => HostelScreen(),
+        // HostelScreen.id: (context) => HostelScreen(),
         ComplaintScreen.id: (context) => ComplaintScreen(
-              hostelNumber: ModalRoute.of(context).settings.arguments,
+              email: ModalRoute.of(context).settings.arguments,
             ),
         StatusScreen.id: (context) => StatusScreen(
               args: ModalRoute.of(context).settings.arguments,
             ),
         ChatScreen.id: (context) => ChatScreen(
-          head: ModalRoute.of(context).settings.arguments,
-        ),
+              head: ModalRoute.of(context).settings.arguments,
+            ),
       },
     );
   }

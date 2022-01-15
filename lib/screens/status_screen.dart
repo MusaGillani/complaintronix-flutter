@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:complaintronix/utilities/constants.dart';
-import 'package:complaintronix/services/auth.dart';
 import 'package:complaintronix/services/networking.dart' as api;
 import '../components/alert_box.dart' as alert;
 import 'chat_screen.dart';
@@ -9,7 +8,6 @@ class StatusScreen extends StatefulWidget {
   StatusScreen({this.args});
 
   static const String id = 'status_screen';
-// TODO refactor to pass complaint status along with reg number
   final Map args;
 
   @override
@@ -17,30 +15,27 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-  final _googleAuth = GoogleAuthService();
-  final _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) {
-            return BackButton(
-              onPressed: () async {
-                if (_auth.currentUser() != null) {
-                  await _auth.signOut();
-                  Navigator.of(context).pop(context);
-                }
-                if (_googleAuth.currentUser() != null) {
-                  await _googleAuth.signOut();
-                  // Navigator.of(context).pop(context);
-                }
-              },
-            );
-          },
-        ),
+        // leading: Builder(
+        //   builder: (context) {
+        //     return BackButton(
+        //       onPressed: () async {
+        //         // if (_auth.currentUser() != null) {
+        //         //   await _auth.signOut();
+        //         //   Navigator.of(context).pop(context);
+        //         // }
+        //         // if (_googleAuth.currentUser() != null) {
+        //         //   await _googleAuth.signOut();
+        //         //   // Navigator.of(context).pop(context);
+        //         // }
+        //       },
+        //     );
+        //   },
+        // ),
         centerTitle: true,
         title: kAppbarTitle,
         actions: <Widget>[

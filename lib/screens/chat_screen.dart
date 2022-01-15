@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:complaintronix/utilities/constants.dart';
 import 'package:complaintronix/services/messages.dart';
-
-User loggedInUser;
 
 class ChatScreen extends StatefulWidget {
   ChatScreen({this.head});
@@ -16,26 +13,25 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
 
   String messageText;
 
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        // print(loggedInUser.email);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  // void getCurrentUser() {
+  //   try {
+  //     final user = _auth.currentUser;
+  //     if (user != null) {
+  //       loggedInUser = user;
+  //       // print(loggedInUser.email);
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
+    // getCurrentUser();
   }
 
   @override
@@ -52,8 +48,8 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MessagesStream(
-              loggedInUser: loggedInUser,
-            ),
+                // loggedInUser: loggedInUser,
+                ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -74,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       // send message text
                       messageTextController.clear();
-                      sendMessage(messageText: messageText,loggedInUser: loggedInUser);
+                      // sendMessage(messageText: messageText,loggedInUser: loggedInUser);
                     },
                   ),
                 ],
