@@ -4,9 +4,8 @@ import 'package:complaintronix/services/networking.dart' as api;
 import 'chat_screen.dart';
 
 class ComplaintsViewScreen extends StatefulWidget {
-  ComplaintsViewScreen({this.hostelNumber});
-
-  final int hostelNumber; // hostel number of hostel head
+  ComplaintsViewScreen({this.args});
+  final Map args;
 
   static const id = 'complaints_view_screen';
 
@@ -48,7 +47,7 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
     Future.delayed(
         Duration.zero,
         () => _future =
-            api.getHostelComplaints(hostelNumber: widget.hostelNumber));
+            api.getHostelComplaints(hostelNumber: widget.args['hostelNumber']));
     super.initState();
   }
 
@@ -64,7 +63,7 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
                 Navigator.pushNamed(
                   context,
                   ChatScreen.id,
-                  arguments: true,
+                  arguments: widget.args['email'],
                 );
               },
               child: Text(
@@ -89,7 +88,7 @@ class _ComplaintsViewScreenState extends State<ComplaintsViewScreen> {
               SizedBox(
                 height: 10.0,
               ),
-              Text('H-${widget.hostelNumber}', style: kLogoTextStyle),
+              Text('H-${widget.args['hostelNumber']}', style: kLogoTextStyle),
               SizedBox(
                 height: 10.0,
               ),

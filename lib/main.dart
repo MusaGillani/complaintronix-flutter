@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ComplaintsViewScreen.id: (context) => ComplaintsViewScreen(
-              hostelNumber: ModalRoute.of(context).settings.arguments,
+              args: ModalRoute.of(context).settings.arguments,
             ),
         // HostelScreen.id: (context) => HostelScreen(),
         ComplaintScreen.id: (context) => ComplaintScreen(

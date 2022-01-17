@@ -242,7 +242,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             controllerPassword.clear();
                             Navigator.pushNamed(
                                 context, ComplaintsViewScreen.id,
-                                arguments: int.parse(hostel));
+                                arguments: {
+                                  'hostelNumber': int.parse(hostel),
+                                  'email': email,
+                                });
                           }
                         }
                         /*
