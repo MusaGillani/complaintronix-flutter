@@ -7,10 +7,10 @@ import 'package:complaintronix/components/message_bubble.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen({this.head});
+  ChatScreen({@required this.email});
   static const String id = 'chat_screen';
 
-  final bool head;
+  final String email;
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -74,9 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   final messageBubble = MessageBubble(
                     sender: messageSender.toString(),
                     text: messageText,
-                    isMe: false,
-                    // isMe: currentUser ==
-                    //     messageSender, //The message from the logged in user
+                    // isMe: false
+                    isMe: widget.email ==
+                        messageSender, //The message from the logged in user
                   );
                   messageBubbles.add(messageBubble);
                 }
@@ -115,6 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       messageTextController.clear();
                       messagesStream.sendMessage(
                         messageText: messageText,
+                        sender: widget.email,
                       );
                     },
                   ),
@@ -171,7 +172,7 @@ class StreamSocket {
         // print(message['msg_text']);
         messages.add({
           'text': message['msg_text'],
-          'sender': message['msgr_reg'],
+          'sender': message['email'],
           'time': message['messaged_at']
         });
       }
@@ -181,10 +182,10 @@ class StreamSocket {
     socket.onDisconnect((_) => print('disconnect'));
   }
 
-  void sendMessage({String messageText}) {
+  void sendMessage({String messageText, String sender}) {
     socket.emit('message', {
       'text': messageText,
-      'sender': 2018460,
+      'sender': sender,
     });
     // addMessages(messageText);
   }

@@ -41,11 +41,8 @@ class _StatusScreenState extends State<StatusScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                ChatScreen.id,
-                arguments: false,
-              );
+              Navigator.pushNamed(context, ChatScreen.id,
+                  arguments: widget.args['email']);
             },
             child: Text(
               'Chat',

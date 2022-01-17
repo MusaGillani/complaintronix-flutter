@@ -220,7 +220,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               Navigator.pushNamed(context, StatusScreen.id,
                                   arguments: {
                                     'reg': complaint[0]['complaintee_reg'],
-                                    'status': complaint[0]['complaint_status']
+                                    'status': complaint[0]['complaint_status'],
+                                    'email': email,
                                   });
                             } else
                               Navigator.pushNamed(context, ComplaintScreen.id,
