@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// final _url = '127.0.0.1:5000';
 final _url = 'complaintronix.herokuapp.com';
 
 // Student api used here
@@ -15,7 +16,7 @@ Future registerWithEmail({
 }) async {
   String _api = '/api/students';
   http.Response res = await http.post(
-    Uri.parse('https://complaintronix.herokuapp.com/api/students'),
+    Uri.parse('https://$_url$_api'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -97,8 +98,9 @@ Future<List<Map<String, String>>> getHostelComplaints(
 }
 
 Future<int> registerComplaint({String email, String desc, String type}) async {
+  String _api = '/api/complaints';
   final response = await http.post(
-    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    Uri.parse('https://$_url$_api'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -123,8 +125,9 @@ Future<int> registerComplaint({String email, String desc, String type}) async {
 }
 
 Future updateComplaint({String reg, String status}) async {
+  String _api = '/api/complaints';
   final res = await http.put(
-    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    Uri.parse('https://$_url$_api'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -140,8 +143,9 @@ Future updateComplaint({String reg, String status}) async {
 }
 
 Future<int> deleteComplaint({int reg}) async {
+  String _api = '/api/complaints';
   final http.Response response = await http.delete(
-    Uri.parse('https://complaintronix.herokuapp.com/api/complaints'),
+    Uri.parse('https://$_url$_api'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -162,8 +166,9 @@ Future<int> deleteComplaint({int reg}) async {
 }
 
 Future<dynamic> getComplaintStatus({String email}) async {
+  String _api = '/api/complaints/status';
   final http.Response response = await http.get(
-    Uri.https('complaintronix.herokuapp.com', '/api/complaints/status', {
+    Uri.https(_url, _api, {
       'email': '$email',
     }),
   );
